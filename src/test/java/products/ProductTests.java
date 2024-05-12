@@ -72,4 +72,18 @@ public class ProductTests {
         response = RestUtils.performPut(endPoint, payload, new HashMap<>());
         responseBody = new JSONObject(response.getBody().asString());
     }
+
+    @When("I make a DELETE request to delete the product")
+    public void deleteProduct() {
+        String endPoint = jsonObject.getString("deleteProduct");
+        response = RestUtils.performDelete(endPoint, new HashMap<>());
+        responseBody = new JSONObject(response.getBody().asString());
+    }
+
+    @Then("the product is deleted")
+    public void productIsDeleted() {
+        deleteProduct();
+        boolean isDeleted = responseBody.getBoolean("isDeleted");
+        Assert.assertTrue(isDeleted, "Product should be deleted");
+    }
 }

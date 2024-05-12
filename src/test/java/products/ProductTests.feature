@@ -17,3 +17,7 @@ Feature: Product Tests
     Then the response status code should be 200
     And the product title should be "iPhone Galaxy +1"
 
+  Scenario: Delete Product
+    When I make a DELETE request to delete the product
+    Then the response status code should be 200
+    And the product is deleted

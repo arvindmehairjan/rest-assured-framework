@@ -31,4 +31,11 @@ public class RestUtils {
                 .body(requestPayload)
                 .put();
     }
+    public static Response performDelete(String endpoint, Map<String, String> headers) {
+        return RestAssured.given().log().all()
+                .baseUri(endpoint)
+                .headers(headers)
+                .contentType(ContentType.JSON)
+                .delete();
+    }
 }
