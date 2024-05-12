@@ -1,69 +1,67 @@
 package products;
-
+import io.cucumber.java.Before;
+import io.cucumber.java.en.*;
 import org.json.JSONObject;
 import io.restassured.response.Response;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.Assert;
 import utils.RestUtils;
-import utils.TestLogger;
+
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
-import static org.testng.Assert.assertEquals;
-
 public class ProductTests {
 
     private JSONObject jsonObject;
+    private Response response;
+    private JSONObject responseBody;
 
-    @BeforeClass
-    public void setUp() {
+    @Before
+    public void loadProductData() {
         try {
             String jsonContent = new String(Files.readAllBytes(Paths.get("src/test/resources/dev/dummyData.json")));
             jsonObject = new JSONObject(jsonContent);
-        } catch (Exception e) {
-            TestLogger.logError("Failed to read JSON file", e);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read JSON file", e);
         }
     }
 
-    @Test
+    @When("I make a POST request to create the product")
     public void createProduct() {
-        TestLogger.logInfo("Starting createProduct test");
         String endPoint = jsonObject.getString("createProduct");
-        Response response = RestUtils.performPost(endPoint, "{\"title\":\"BMW\"}", new HashMap<>());
-        assertResponseStatus(response, 200);
-        assertTitle(response, "BMW");
-        TestLogger.logInfo("createProduct test completed successfully");
+        response = RestUtils.performPost(endPoint, "{\"title\":\"BMW\"}", new HashMap<>());
+        responseBody = new JSONObject(response.getBody().asString());
     }
 
-    @Test
-    public void getProduct() {
-        TestLogger.logInfo("Starting getProduct test");
+    @When("I make a GET request to retrieve the product details")
+    public void getProductDetails() {
         String endPoint = jsonObject.getString("readProductDetails");
-        Response response = RestUtils.performGet(endPoint, new HashMap<>());
-        assertResponseStatus(response, 200);
-        assertTitle(response, "iPhone 9");
-        assertPrice(response, 549);
-        assertDiscountPercentage(response, 12.96);
-        TestLogger.logInfo("getProduct test completed successfully");
+        response = RestUtils.performGet(endPoint, new HashMap<>());
+        responseBody = new JSONObject(response.getBody().asString());
     }
 
-    private void assertResponseStatus(Response response, int expectedStatusCode) {
-        assertEquals(response.getStatusCode(), expectedStatusCode);
+    @Then("the response status code should be {int}")
+    public void verifyStatusCode(int expectedStatusCode) {
+        int actualStatusCode = response.getStatusCode();
+        Assert.assertEquals(actualStatusCode, expectedStatusCode, "Response status code is not as expected");
     }
 
-    private void assertTitle(Response response, String expectedTitle) {
-        JSONObject responseBody = new JSONObject(response.getBody().asString());
-        assertEquals(responseBody.getString("title"), expectedTitle, "Title is not as expected");
+    @Then("the product title should be {string}")
+    public void verifyProductTitle(String expectedTitle) {
+        String actualTitle = responseBody.getString("title");
+        Assert.assertEquals(actualTitle, expectedTitle, "Product title is not as expected");
     }
 
-    private void assertPrice(Response response, int expectedPrice) {
-        JSONObject responseBody = new JSONObject(response.getBody().asString());
-        assertEquals(responseBody.getInt("price"), expectedPrice, "Price is not as expected");
+    @Then("the product price should be {int}")
+    public void verifyProductPrice(int expectedPrice) {
+        int actualPrice = responseBody.getInt("price");
+        Assert.assertEquals(actualPrice, expectedPrice, "Product price is not as expected");
     }
 
-    private void assertDiscountPercentage(Response response, double expectedDiscount) {
-        JSONObject responseBody = new JSONObject(response.getBody().asString());
-        assertEquals(responseBody.getDouble("discountPercentage"), expectedDiscount, "Discount is not as expected");
+    @Then("the product discount percentage should be {double}")
+    public void verifyDiscountPercentage(double expectedDiscount) {
+        double actualDiscount = responseBody.getDouble("discountPercentage");
+        Assert.assertEquals(actualDiscount, expectedDiscount, "Product discount percentage is not as expected");
     }
 }
