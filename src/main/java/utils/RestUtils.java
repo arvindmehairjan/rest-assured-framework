@@ -23,4 +23,12 @@ public class RestUtils {
                 .contentType(ContentType.JSON)
                 .get();
     }
+    public static Response performPut(String endpoint, String requestPayload, Map<String, String> headers) {
+        return RestAssured.given().log().all()
+                .baseUri(endpoint)
+                .headers(headers)
+                .contentType(ContentType.JSON)
+                .body(requestPayload)
+                .put();
+    }
 }

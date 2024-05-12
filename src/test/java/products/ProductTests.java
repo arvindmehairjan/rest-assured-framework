@@ -64,4 +64,12 @@ public class ProductTests {
         double actualDiscount = responseBody.getDouble("discountPercentage");
         Assert.assertEquals(actualDiscount, expectedDiscount, "Product discount percentage is not as expected");
     }
+
+    @When("I make a PUT request to update the product title to {string}")
+    public void updateProductTitle(String newTitle) {
+        String endPoint = jsonObject.getString("updateProductTitle");
+        String payload = "{\"title\":\"" + newTitle + "\"}";
+        response = RestUtils.performPut(endPoint, payload, new HashMap<>());
+        responseBody = new JSONObject(response.getBody().asString());
+    }
 }
