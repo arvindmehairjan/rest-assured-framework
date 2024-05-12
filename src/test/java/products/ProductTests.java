@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import utils.RestUtils;
+import utils.TestLogger; // Import the TestLogger class
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,6 +25,7 @@ public class ProductTests {
             String jsonContent = new String(Files.readAllBytes(Paths.get("src/test/resources/dev/dummyData.json")));
             jsonObject = new JSONObject(jsonContent);
         } catch (IOException e) {
+            TestLogger.logError("Failed to read JSON file", e); // Log the error
             throw new RuntimeException("Failed to read JSON file", e);
         }
     }
