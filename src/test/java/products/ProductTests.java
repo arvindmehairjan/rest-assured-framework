@@ -9,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
+import static org.testng.Assert.assertEquals;
+
 public class ProductTests {
     @Test
     public void createProduct() {
@@ -36,6 +38,16 @@ public class ProductTests {
         Response response = RestUtils.performPost(endPoint, payload, new HashMap<>());
 
         // Assert response status code
-        Assert.assertEquals(response.getStatusCode(), 200);
+        assertEquals(response.getStatusCode(), 200);
+
+        // Parse response body to JSON object
+        JSONObject responseBody = new JSONObject(response.getBody().asString());
+
+        // Retrieve value associated with "title" key
+        String title = responseBody.getString("title");
+
+        // Assert that the title is "BMW"
+        assertEquals(title, "BMW", "Title is BWM");
+
     }
 }
