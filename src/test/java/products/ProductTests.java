@@ -1,4 +1,5 @@
 package products;
+
 import io.cucumber.java.Before;
 import io.cucumber.java.en.*;
 import org.json.JSONObject;
@@ -29,14 +30,16 @@ public class ProductTests {
 
     @When("I make a POST request to create the product")
     public void createProduct() {
-        String endPoint = jsonObject.getString("createProduct");
+        String baseURI = jsonObject.getString("baseURI");
+        String endPoint = baseURI + jsonObject.getString("createProduct");
         response = RestUtils.performPost(endPoint, "{\"title\":\"BMW\"}", new HashMap<>());
         responseBody = new JSONObject(response.getBody().asString());
     }
 
     @When("I make a GET request to retrieve the product details")
     public void getProductDetails() {
-        String endPoint = jsonObject.getString("readProductDetails");
+        String baseURI = jsonObject.getString("baseURI");
+        String endPoint = baseURI + jsonObject.getString("readProductDetails");
         response = RestUtils.performGet(endPoint, new HashMap<>());
         responseBody = new JSONObject(response.getBody().asString());
     }
@@ -67,7 +70,8 @@ public class ProductTests {
 
     @When("I make a PUT request to update the product title to {string}")
     public void updateProductTitle(String newTitle) {
-        String endPoint = jsonObject.getString("updateProductTitle");
+        String baseURI = jsonObject.getString("baseURI");
+        String endPoint = baseURI + jsonObject.getString("updateProductTitle");
         String payload = "{\"title\":\"" + newTitle + "\"}";
         response = RestUtils.performPut(endPoint, payload, new HashMap<>());
         responseBody = new JSONObject(response.getBody().asString());
@@ -75,7 +79,8 @@ public class ProductTests {
 
     @When("I make a DELETE request to delete the product")
     public void deleteProduct() {
-        String endPoint = jsonObject.getString("deleteProduct");
+        String baseURI = jsonObject.getString("baseURI");
+        String endPoint = baseURI + jsonObject.getString("deleteProduct");
         response = RestUtils.performDelete(endPoint, new HashMap<>());
         responseBody = new JSONObject(response.getBody().asString());
     }

@@ -1,6 +1,7 @@
 {
-  "createProduct": "https://dummyjson.com/products/add",
-  "readProductDetails": "https://dummyjson.com/products/1",
-  "updateProductTitle": "https://dummyjson.com/products/1",
-  "deleteProduct": "https://dummyjson.com/products/1"
+  "baseURI": "https://dummyjson.com/",
+  "createProduct": "products/add",
+  "readProductDetails": "products/1",
+  "updateProductTitle": "products/1",
+  "deleteProduct": "products/1"
 }
