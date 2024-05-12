@@ -78,9 +78,12 @@ public class ProductTests {
 
         // Retrieve value associated with "title" key
         String title = responseBody.getString("title");
+        Integer price = responseBody.getInt("price");
+        double discountPercentage = responseBody.getDouble("discountPercentage");
 
         // Assert that the title is "BMW"
         assertEquals(title, "iPhone 9", "Title is iPhone 9");
-
+        assertEquals(price, 549, "Price is 549 euro");
+        assertEquals(discountPercentage, 12.96, "Discount is 12.96");
     }
 }
