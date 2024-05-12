@@ -27,7 +27,7 @@ public class ProductTests {
         JSONObject jsonObject = new JSONObject(jsonContent);
 
         // Get endpoint from JSON
-        String endPoint = jsonObject.getString("createDummyDataEndpoint");
+        String endPoint = jsonObject.getString("createProduct");
 
         // Payload for the POST request
         String payload = "{" +
@@ -48,6 +48,39 @@ public class ProductTests {
 
         // Assert that the title is "BMW"
         assertEquals(title, "BMW", "Title is BWM");
+
+    }
+    @Test
+    public void getProduct() {
+        // Read JSON file into a string
+        String jsonContent = null;
+        try {
+            jsonContent = new String(Files.readAllBytes(Paths.get("src/test/resources/dev/dummyData.json")));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail("Failed to read JSON file.");
+        }
+
+        // Parse JSON string to JSONObject
+        JSONObject jsonObject = new JSONObject(jsonContent);
+
+        // Get endpoint from JSON
+        String endPoint = jsonObject.getString("readProductDetails");
+
+        // Perform POST request
+        Response response = RestUtils.performGet(endPoint, new HashMap<>());
+
+        // Assert response status code
+        assertEquals(response.getStatusCode(), 200);
+
+        // Parse response body to JSON object
+        JSONObject responseBody = new JSONObject(response.getBody().asString());
+
+        // Retrieve value associated with "title" key
+        String title = responseBody.getString("title");
+
+        // Assert that the title is "BMW"
+        assertEquals(title, "iPhone 9", "Title is iPhone 9");
 
     }
 }

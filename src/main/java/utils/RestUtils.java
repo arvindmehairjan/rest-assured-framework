@@ -15,4 +15,11 @@ public class RestUtils {
                 .body(requestPayLoad)
                 .post();
     }
+    public static Response performGet(String endpoint, Map<String, String> headers) {
+        return RestAssured.given().log().all()
+                .baseUri(endpoint)
+                .headers(headers)
+                .contentType(ContentType.JSON)
+                .get();
+    }
 }
