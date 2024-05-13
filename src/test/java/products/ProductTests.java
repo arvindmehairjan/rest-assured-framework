@@ -32,7 +32,7 @@ public class ProductTests {
     @Before
     public void loadProductData() {
         try {
-            String jsonContent = new String(Files.readAllBytes(Paths.get("src/test/resources/dev/dummyData.json")));
+            String jsonContent = new String(Files.readAllBytes(Paths.get("src/test/resources/dummyData.json")));
             jsonObject = new JSONObject(jsonContent);
         } catch (IOException e) {
             TestLogger.logError("Failed to read JSON file", e); // Log the error
