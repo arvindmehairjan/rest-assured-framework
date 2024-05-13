@@ -2,9 +2,9 @@ name: Rest API Tests using Rest Assured with TestNG
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   build:
