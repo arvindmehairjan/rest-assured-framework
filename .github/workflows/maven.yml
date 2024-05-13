@@ -32,4 +32,4 @@ jobs:
 
       - name: Run REST Assured tests
         working-directory: ./src/test/java/products
-        run: mvn -f pom.xml test -Dtest=ProductTests
+        run: mvn test -Dtest=ProductTests
