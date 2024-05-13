@@ -2,6 +2,7 @@ package products;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.en.*;
+import io.cucumber.testng.CucumberOptions;
 import org.json.JSONObject;
 import io.restassured.response.Response;
 import org.testng.Assert;
@@ -13,6 +14,15 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
+@CucumberOptions(
+        features = "src/test/resources/features",
+        glue = "products",
+        plugin = {
+                "pretty",
+                "json:target/cucumber-reports/Cucumber.json",
+                "html:target/cucumber-reports"
+        }
+)
 public class ProductTests {
 
     private JSONObject jsonObject;
